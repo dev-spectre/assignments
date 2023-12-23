@@ -39,11 +39,112 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
-  const express = require('express');
-  const bodyParser = require('body-parser');
-  
-  const app = express();
-  
-  app.use(bodyParser.json());
-  
-  module.exports = app;
+const express = require("express");
+const bodyParser = require("body-parser");
+const crypto = require("crypto");
+const fs = require("fs");
+
+const persist = false;
+const todos = persist? JSON.parse(fs.readFileSync("./todos.json", "utf-8")): [];
+
+const app = express();
+const port = 3005;
+
+app.use(bodyParser.json());
+
+app.get("/", function (req, res) {
+  res.send("<h1>TODO SERVER</h1>");
+});
+
+app.get("/todos", function (req, res) {
+  res.send(todos);
+});
+
+app.get("/todos/:id", function (req, res) {
+  const todo = getTodo(todos, req.params.id);
+  if (todo === null) {
+    res.status(404).send("Not Found");
+    return;
+  }
+  res.json(todo);
+});
+
+app.post("/todos", function (req, res) {
+  const id = crypto.randomUUID();
+  const todo = {
+    id,
+    title: req.body.title,
+    description: req.body.description,
+    completed: req.body.completed,
+  };
+  todos.push(todo);
+  let isDataSaved = saveData(todos);
+  if (!isDataSaved) {
+    res.status(500).send("Failed to save data");
+    return;
+  }
+  res.status(201).json({ id });
+});
+
+app.put("/todos/:id", function (req, res) {
+  const todo = getTodo(todos, req.params.id);
+  if (todo === null) {
+    res.status(404).send("Not Found");
+    return;
+  }
+  todo.title = req.body.title;
+  todo.completed = req.body.completed;
+  let isDataSaved = saveData(todos);
+  if (!isDataSaved) {
+    res.status(500).send("Failed to save data");
+    return;
+  }
+  res.send();
+});
+
+app.delete("/todos/:id", function (req, res) {
+  const index = getTodoIndex(todos, req.params.id);
+  if (index === null) {
+    res.status(404).send("Not Found");
+    return;
+  }
+  todos.splice(index, 1);
+  let isDataSaved = saveData(todos);
+  if (!isDataSaved) {
+    res.status(500).send("Failed to save data");
+    return;
+  }
+  res.send();
+});
+
+app.all("*", function (req, res) {
+  res.status(404).send("Not Found");
+});
+
+// app.listen(port, () => console.log("App live at port:", port));
+
+function getTodo(todos, id) {
+  for (let i = 0; i < todos.length; i++) {
+    if (todos[i].id === id) {
+      return todos[i];
+    }
+  }
+  return null;
+}
+
+function getTodoIndex(todos, id) {
+  for (let i = 0; i < todos.length; i++) {
+    if (todos[i].id === id) return i;
+  }
+  return null;
+}
+
+function saveData(todos) {
+  let isDataSaved = true;
+  fs.writeFile("./todos.json", JSON.stringify(todos), "utf-8", function (err) {
+    isDataSaved = false;
+  });
+  return isDataSaved;
+}
+
+module.exports = app;

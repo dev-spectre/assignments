@@ -16,6 +16,15 @@ setInterval(() => {
     numberOfRequestsForUser = {};
 }, 1000)
 
+app.use(function(req, res, next) {
+  const userId = req.headers.userId;
+  if (numberOfRequestsForUser.hasOwnProperty(userId) && numberOfRequestsForUser[userId] > 5) {
+    return res.status(429).send("Error 429: Too many requests");
+  }
+  numberOfRequestsForUser[userId]? numberOfRequestsForUser[userId]++ : numberOfRequestsForUser[userId] = 1;
+  next();
+})
+
 app.get('/user', function(req, res) {
   res.status(200).json({ name: 'john' });
 });

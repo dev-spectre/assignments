@@ -15,7 +15,38 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const app = express();
 
+const app = express();
+const port = 3000;
+
+app.get("/", function(req, res) {
+  res.send("<h1>FILE SERVER</h1>");
+});
+
+app.get("/files", function(req, res) {
+  const dirPath = path.join(__dirname, "/files");
+  fs.readdir(dirPath, function(err, files) {
+    if (err) {
+      res.status(500).send("Internal Server Error");
+    }
+    res.json({ files });
+  });
+});
+
+
+app.get("/file/:fileName", function(req, res) {
+  const filePath = path.join(__dirname, "/files", req.params.fileName);
+  fs.readFile(filePath, "utf-8", function(err, data) {
+    if (err && err.code === "ENOENT") {
+      res.status(404).send("File not found");
+      return;
+    }
+    res.send(data);
+  });
+});
+
+app.all("*", function(req, res) {
+  res.status(404).send("Route not found");
+});
 
 module.exports = app;

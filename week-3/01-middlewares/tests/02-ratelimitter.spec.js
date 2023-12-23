@@ -14,7 +14,7 @@ describe('GET /user', function () {
       });
   });
 
-  it('5 or more requests return back a 404', function(done) {
+  it('5 or more requests return back a 429', function(done) {
       for (let i = 0; i<5; i++) {
         request(app).get('/user').set('user-id', userId).then();
       }
@@ -22,7 +22,7 @@ describe('GET /user', function () {
         .get('/user')
         .set('user-id', userId)
         .then((response) => {
-          expect(response.status).toBe(404);
+          expect(response.status).toBe(429);
           done();
         });
   });
