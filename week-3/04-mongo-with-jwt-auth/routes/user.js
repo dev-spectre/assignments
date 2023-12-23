@@ -8,29 +8,6 @@ const jwtpassword = "superSeceretJWTpassword";
 const router = Router();
 
 // User Routes
-<<<<<<< Updated upstream
-router.post('/signup', (req, res) => {
-    // Implement user signup logic
-});
-
-router.post('/signin', (req, res) => {
-    // Implement admin signup logic
-});
-
-router.get('/courses', (req, res) => {
-    // Implement listing all courses logic
-});
-
-router.post('/courses/:courseId', userMiddleware, (req, res) => {
-    // Implement course purchase logic
-});
-
-router.get('/purchasedCourses', userMiddleware, (req, res) => {
-    // Implement fetching purchased courses logic
-});
-
-module.exports = router
-=======
 router.post("/signup", async (req, res) => {
   // Implement user signup logic
   const username = req.headers.username;
@@ -145,4 +122,3 @@ function verifyPassword(password, hashedPassword) {
 }
 
 module.exports = router;
->>>>>>> Stashed changes

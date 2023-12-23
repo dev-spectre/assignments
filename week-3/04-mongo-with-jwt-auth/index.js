@@ -11,9 +11,6 @@ app.use(bodyParser.json());
 app.use("/admin", adminRouter);
 app.use("/user", userRouter);
 
-<<<<<<< Updated upstream
-const PORT = 3000;
-=======
 app.all("*", function(req, res) {
     res.status(404).json({ message: "Couldn't find what you were looking for" });
 })
@@ -24,7 +21,6 @@ app.use(function(err, req, res, next) {
     });
 })
 
->>>>>>> Stashed changes
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
