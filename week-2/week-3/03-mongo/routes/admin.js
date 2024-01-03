@@ -7,18 +7,6 @@ const router = Router();
 router.use(json());
 
 // Admin Routes
-<<<<<<< Updated upstream
-router.post('/signup', (req, res) => {
-    // Implement admin signup logic
-});
-
-router.post('/courses', adminMiddleware, (req, res) => {
-    // Implement course creation logic
-});
-
-router.get('/courses', adminMiddleware, (req, res) => {
-    // Implement fetching all courses logic
-=======
 router.post("/signup", async (req, res) => {
   // Implement admin signup logic
   const username = req.headers.username;
@@ -65,7 +53,6 @@ router.get("/courses", adminMiddleware, async (req, res) => {
     };
   });
   res.json({ courses });
->>>>>>> Stashed changes
 });
 
 function validateCourse(req, res, next) {

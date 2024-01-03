@@ -4,25 +4,6 @@ const userMiddleware = require("../middleware/user");
 const { User, Course } = require("../db/index.js");
 
 // User Routes
-<<<<<<< Updated upstream
-router.post('/signup', (req, res) => {
-    // Implement user signup logic
-});
-
-router.get('/courses', (req, res) => {
-    // Implement listing all courses logic
-});
-
-router.post('/courses/:courseId', userMiddleware, (req, res) => {
-    // Implement course purchase logic
-});
-
-router.get('/purchasedCourses', userMiddleware, (req, res) => {
-    // Implement fetching purchased courses logic
-});
-
-module.exports = router
-=======
 router.post("/signup", async (req, res) => {
   // Implement user signup logic
   const username = req.headers.username;
@@ -94,4 +75,3 @@ router.get("/purchasedCourses", userMiddleware, async (req, res) => {
 });
 
 module.exports = router;
->>>>>>> Stashed changes
