@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo</title>
+  </head>
+  <body>
+    <h1>TODO</h1>
+    <div><input type="text" placeholder="title" id="title" /></div>
+    <div><input type="text" placeholder="description" id="description" /></div>
+    <button id="add-todo">Add Todo</button>
+    <div id="todos"></div>
+  </body>
+
+  <script>
+    const addTodo = document.getElementById("add-todo");
+    addTodo.addEventListener("click", function () {
+      const todo = {
+        title: document.getElementById("title").value,
+        description: document.getElementById("description").value,
+      };
+
+      if (todo.title.length < 1) return;
+
+      const todoContainer = document.createElement("div");
+      todoContainer.classList.add("todo");
+
+      const title = document.createElement("h2");
+      title.innerText = todo.title;
+
+      const description = document.createElement("p");
+      description.innerText = todo.description;
+
+      const markAsDone = document.createElement("button");
+      markAsDone.innerText = "Mark as done";
+      markAsDone.addEventListener("click", function () {
+        markAsDone.innerText = "Done";
+        markAsDone.removeEventListener("click");
+      });
+
+      todoContainer.appendChild(title);
+      todoContainer.appendChild(description);
+      todoContainer.appendChild(markAsDone);
+
+      const todos = document.getElementById("todos");
+      todos.appendChild(todoContainer);
+    });
+  </script>
+</html>

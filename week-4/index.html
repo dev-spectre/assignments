@@ -6,17 +6,70 @@
     let globalId = 1;
     let todoState = [];
     let oldTodoState = [];
+    const indexMap = {};
 
-    function addTodoToDom() {
+    function addTodoToDom(todo) {
+      const todoContainer = document.createElement("div");
+      todoContainer.dataset.id = todo.id;
       
+      const todoTitle = document.createElement("h2");
+      todoTitle.innerText = todo.title;
+
+      const todoDescription = document.createElement("p");
+      todoDescription.innerText = todo.description;
+
+      const editTodoButton = document.createElement("button");
+      editTodoButton.innerText = "Edit";
+      editTodoButton.addEventListener("click", () => {
+        const title = prompt("Enter new title");
+        const description = prompt("Enter new description");
+
+        const id = +editTodoButton.parentElement.dataset.id;
+        const index = indexMap[id];
+        todoState[index].title = title? title : todoState[index].title;
+        todoState[index].description = description? description : todoState[index].description;
+        updateState(todoState);
+      });
+
+      const removeTodoButton = document.createElement("button");
+      removeTodoButton.innerText = "Delete";
+      removeTodoButton.addEventListener("click", () => {
+        const id = +removeTodoButton.parentElement.dataset.id;
+        const index = indexMap[id];
+        todoState.splice(index, 1);
+        updateState(todoState);
+      });
+
+      const markAsDoneButton = document.createElement("button");
+      markAsDoneButton.innerText = "Mark as done";
+      markAsDoneButton.addEventListener("click", () => markAsDoneButton.innerText = "Done");
+
+      todoContainer.appendChild(todoTitle);
+      todoContainer.appendChild(todoDescription);
+      todoContainer.appendChild(editTodoButton);
+      todoContainer.appendChild(removeTodoButton);
+      todoContainer.appendChild(markAsDoneButton);
+
+      const todos = document.getElementById("todos");
+      todos.appendChild(todoContainer);
     }
 
     function removeTodoFromDom(todo) {
-      
+      const todoToRemove = document.querySelector(`div[data-id="${todo.id}"]`);
+      const todos = document.getElementById("todos");
+      todos.removeChild(todoToRemove);
     }
 
     function updateTodoInDom(oldTodo, newTodo) {
-        
+        if (oldTodo.title !== newTodo.title) {
+          const todoTitle = document.querySelector(`div[data-id="${newTodo.id}"] h2`);
+          todoTitle.innerText = newTodo.title;
+        }
+
+        if (oldTodo.description !== newTodo.description) {
+          const todoDescription = document.querySelector(`div[data-id="${newTodo.id}"] p`);
+          todoDescription.innerText = newTodo.description;
+        }
     }
 
     function updateState(newTodos) {
@@ -31,7 +84,38 @@
       // calculate these 3 arrays
       // call addTodo, removeTodo, updateTodo functions on each of the
       // elements
-      oldTodoState = newTodos;
+      const visitedTodos = [];
+      for (let i = 0; i < newTodos.length; i++) {
+        const todo = newTodos[i];
+        if (!indexMap.hasOwnProperty(todo.id)) {
+          added.push(todo);
+        } else {
+          const index = indexMap[todo.id];
+          const oldTodo = oldTodoState[index];
+          if (oldTodo.title != todo.title || oldTodo.description != todo.description) updated.push(todo);
+        }
+        
+        visitedTodos.push(todo.id);
+        indexMap[todo.id] = i;
+      }
+      
+      for (let i = 0; i < oldTodoState.length; i++) {
+        const todo = oldTodoState[i];
+        if (!visitedTodos.includes(todo.id)) {
+          deleted.push(todo);
+          delete indexMap[todo.id];
+        }
+      }
+        
+      added.forEach(todo => addTodoToDom(todo));
+      deleted.forEach(todo => removeTodoFromDom(todo));
+      updated.forEach(todo => {
+        const index = indexMap[todo.id];
+        const oldTodo = oldTodoState[index];
+        updateTodoInDom(oldTodo, todo);
+      });
+      
+      oldTodoState = JSON.parse(JSON.stringify(newTodos));
     }
 
     function addTodo() {
