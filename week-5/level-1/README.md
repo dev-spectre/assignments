@@ -1,10 +1,10 @@
 You have to create a simple React App which has a reusable Card Component which has the following
- - Ability to pass in props to the Component
- - The Card must show a person's
-    - Name
-    - A short description
-    - LinkedIn, Twitter and other Social Media Handle buttons
-    - Interests Section
+ - Ability to pass in props to the Component ✅
+ - The Card must show a person's ✅
+    - Name ✅
+    - A short description ✅
+    - LinkedIn, Twitter and other Social Media Handle buttons ✅
+    - Interests Section ✅
  - You can assume that this is kind of an e-business card and feel free to put in your creativity
  - Additional & Slightly advanced:
     - Create a page where you can add these kind of Cards by taking input from the user
