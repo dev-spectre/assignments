@@ -1,25 +1,34 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
+import { Todo } from "./components/todo";
 import "./App.css";
 
-const Header = React.memo(function ({ title }) {
-  return <div>Hello my name is {title}</div>;
-});
-
 function App() {
-  const [title, setTitle] = useState("spectre");
+  const [sum, setSum] = useState(0);
+  const [count, setCount] = useState(0);
 
   return (
     <>
-      <button onClick={() => setTitle(Math.random())}>Change title</button>
-      <Header title={title} />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <Header title="Hello, World" />
+      <input
+        onChange={function (e) {
+          const num = Number(e.target.value);
+          if (!num) return;
+          let newSum = 0;
+          for (let i = 1; i <= num; i++) {
+            newSum += i;
+          }
+          console.log(sum, "RENDER")
+          setSum(newSum);
+        }}
+      />
+      <p>Sum is {sum}</p>
+      <button
+        onClick={function () {
+          setCount((count) => count + 1);
+        }}>
+        Count ({count})
+      </button>
     </>
   );
 }
