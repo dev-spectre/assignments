@@ -15,7 +15,7 @@ function SearchBar() {
   );
 }
 
-function Search({ restaurantList, setRestaurants }) {
+function Search({ setSearchText }) {
   return (
     <div className="mx-auto mb-5 w-max">
       <SearchBar />
@@ -23,15 +23,7 @@ function Search({ restaurantList, setRestaurants }) {
         className="rounded-sm bg-black px-4 py-1 active:opacity-70"
         onClick={(e) => {
           const searchText = e.target.previousElementSibling.value;
-          setRestaurants(
-            restaurantList.filter((restaurant) =>
-              !searchText
-                ? true
-                : restaurant.info.name
-                    .toLowerCase()
-                    .includes(searchText.toLowerCase()),
-            ),
-          );
+          setSearchText(searchText);
         }}
       >
         Search
@@ -41,8 +33,7 @@ function Search({ restaurantList, setRestaurants }) {
 }
 
 Search.propTypes = {
-  restaurantList: PropTypes.array.isRequired,
-  setRestaurants: PropTypes.func.isRequired,
+  setSearchText: PropTypes.func.isRequired,
 };
 
 export default Search;

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 let city;
-function useRestaurants(setAllRestaurants, setFilteredRestaurants) {
+function useRestaurants(setAllRestaurants) {
   useEffect(() => {
     getRestaurants();
   }, []);
@@ -16,7 +16,6 @@ function useRestaurants(setAllRestaurants, setFilteredRestaurants) {
       json?.data?.cards?.at(4)?.card?.card?.gridElements?.infoWithStyle
         ?.restaurants || [];
     setAllRestaurants(restaurantList);
-    setFilteredRestaurants(restaurantList);
   }
 
   return city;
