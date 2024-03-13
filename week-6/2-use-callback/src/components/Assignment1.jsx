@@ -6,9 +6,9 @@ export function Assignment1() {
   const [count, setCount] = useState(0);
 
   // Your code starts here
-  const handleIncrement = useCallback(() => setCount(count + 1), [count]);
+  const handleIncrement = useCallback(() => setCount((count) => count + 1), []);
 
-  const handleDecrement = useCallback(() => setCount(count - 1), [count]);
+  const handleDecrement = useCallback(() => setCount((count) => count - 1), []);
   // Your code ends here
 
   return (
