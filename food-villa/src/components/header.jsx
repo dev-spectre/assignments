@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const cartItems = useSelector(store => store.cart.items);
+  console.log(cartItems);
   return (
     <nav className="mb-5 flex items-center justify-between border-b-2 border-neutral-800 px-4 shadow-lg">
       <a>
@@ -40,7 +43,7 @@ const Header = () => {
             className="decoration-2 underline-offset-4 hover:underline"
             to="/cart"
           >
-            Cart
+            Cart ({cartItems.length})
           </Link>
         </li>
       </ul>

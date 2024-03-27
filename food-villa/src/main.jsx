@@ -1,11 +1,14 @@
-import React, { lazy, Suspense } from "react";
-import ReactDOM from "react-dom/client";
+import "./index.css";
 import App from "./App.jsx";
 import Home from "./routes/home";
+import React, { lazy, Suspense } from "react";
 import Error from "./routes/error.jsx";
+import Cart from "./routes/Cart.jsx";
 import RestaurantMenu from "./routes/restaurantMenu";
+import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "./index.css";
+import { Provider } from "react-redux";
+import store from "./store/store.js";
 
 const About = lazy(() => import("./routes/about.jsx"));
 
@@ -13,18 +16,22 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    errorElement: <Error />,
+    errorElement: (
+      <Provider store={store}>
+        <Error />
+      </Provider>
+    ),
     children: [
       {
-        path: "/",
         element: <Home />,
+        index: true,
       },
       {
-        path: "/restaurants/:path",
+        path: "restaurants/:path",
         element: <RestaurantMenu />,
       },
       {
-        path: "/about",
+        path: "about",
         element: (
           <Suspense
             fallback={
@@ -34,6 +41,10 @@ const router = createBrowserRouter([
             <About />
           </Suspense>
         ),
+      },
+      {
+        path: "cart",
+        element: <Cart />,
       },
     ],
   },

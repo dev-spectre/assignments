@@ -3,7 +3,7 @@ import { FOOD_IMG_URL } from "../constants";
 
 function Menu({ name, description, imageId, price }) {
   return (
-    <div className="mb-5 flex justify-between gap-4 rounded-sm border border-stone-500 p-3">
+    <div className="flex justify-between gap-4 rounded-sm border border-stone-500 p-3">
       <div>
         <div className="flex items-center gap-3 font-semibold">
           <h2 className="text-xl font-bold">{name}</h2>
